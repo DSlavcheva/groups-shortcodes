@@ -1,0 +1,14 @@
+/**
+ * #.# Editor Styles
+ *
+ * CSS for just Backend enqueued after style.scss
+ * which makes it higher in priority.
+ */
+
+ 	.groups-inspector__control {
+ 		width: 100%;
+
+ 		> div > div {
+ 			margin-top: 0px;
+ 		}
+ 	}
