@@ -5,7 +5,7 @@
  */
 
 //import React Select2
-import Select from 'react-select';
+import CreatableSelect from 'react-select/lib/Creatable';
 //import classnames from 'classnames';
 
 //  Import CSS.
@@ -145,12 +145,13 @@ registerBlockType( 'groups/groups-shortcodes', {
 							</label>
 					</PanelRow>
 						<PanelRow>
-								<Select
+								<CreatableSelect
 									className="groups-inspector__control"
 									name='block-groups'
 									value={ selectedGroups }
 									onChange={ handleGroupsChange }
 									options={ groups }
+									isClearable
 									isMulti='true'
 								 />
 						</PanelRow>
