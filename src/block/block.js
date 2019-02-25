@@ -158,7 +158,7 @@ registerBlockType( 'groups/groups-shortcodes', {
 					</PanelBody>
 				</InspectorControls>,
 				  <div className={ props.className }>
-			      { __( 'Add Blocks with restricted content.' ) }
+			      { __( 'Add Blocks with restricted content.', 'groups-shortcodes' ) }
 			      <InnerBlocks />
 			    </div>
 			];
