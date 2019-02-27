@@ -42,7 +42,6 @@ const actions = {
  */
 const store = registerStore( 'groups/groups-shortcodes', {
 	reducer( state = { groups: {} }, action ) {
-
 		switch ( action.type ) {
 			case 'SET_GROUPS':
 				return {
@@ -121,6 +120,7 @@ registerBlockType( 'groups/groups-shortcodes', {
 		 } )( props => {
 			const { attributes: { groups_select }, groups, className, setAttributes, isSelected } = props;
 			const handleGroupsChange = ( groups_select ) => setAttributes( { groups_select: JSON.stringify( groups_select ) } );
+			const handleGroupsCreate = ;
 			let selectedGroups = [];
 			if ( null !== groups_select ) {
 				selectedGroups = JSON.parse( groups_select );
@@ -150,6 +150,7 @@ registerBlockType( 'groups/groups-shortcodes', {
 									name='block-groups'
 									value={ selectedGroups }
 									onChange={ handleGroupsChange }
+									onCreateOption={ handleGroupsCreate }
 									options={ groups }
 									isClearable
 									isMulti='true'
