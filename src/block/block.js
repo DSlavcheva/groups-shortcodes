@@ -20,15 +20,17 @@ const { InspectorControls, InnerBlocks } = wp.editor; // Import InspectorControl
 const { PanelBody, PanelRow, Spinner } = wp.components; // Import PanelBody, SelectControl from wp.components
 
 /**
- * Actions
+ * Actions object. Actions are payloads of information that send data from the application to the store. Plain JavaScript objects.
  */
 const actions = {
+	// Action creator for the action called when settng a group by choosing from the options list.
 	setGroups( groups ) {
 		return {
 			type: 'SET_GROUPS',
 			groups,
 		};
 	},
+	// Action creator for the action called when populationg the select's options. Called fetchFrom API in the WP handbook.
 	receiveGroups( path ) {
 		return {
 			type: 'RECEIVE_GROUPS',
@@ -38,36 +40,39 @@ const actions = {
 };
 
 /**
- * Register Store
+ * Store
  */
 const store = registerStore( 'groups/groups-shortcodes', {
+	//The reducer is a pure function that takes the previous state and an action, and returns the next state.
 	reducer( state = { groups: {} }, action ) {
 		switch ( action.type ) {
 			case 'SET_GROUPS':
 				return {
+					//To keep the reducer pure, state should not be mutated.
+					//Use object state operator to copy enumerabale properties into a new object instead of Object.assign().
 					...state,
 					groups: action.groups,
 				};
 		}
-
+		// Return the previous state - for an unknown action.
 		return state;
 	},
 
 	actions,
-
+	//A selector accepts state and optional arguments and returns some value from state.
 	selectors: {
 		receiveGroups( state ) {
 			const { groups } = state;
 			return groups;
 		},
 	},
-
+	//Defines the execution flow behavior associated with a specific action type.
 	controls: {
 		RECEIVE_GROUPS( action ) {
 			return apiFetch( { path: action.path } );
 		},
 	},
-
+	//Side-effects for a selector. Used with data from an extrnal source.
 	resolvers: {
 		* receiveGroups( state ) {
 			const groups = yield actions.receiveGroups( '/groups/groups-shortcodes/groups/' );
@@ -77,7 +82,7 @@ const store = registerStore( 'groups/groups-shortcodes', {
 } );
 
 /**
- * Register: aa Gutenberg Block.
+ * Register: Groups Shortcodes Gutenberg Block.
  *
  * Registers a new block provided a unique name and an object defining its
  * behavior. Once registered, the block is made editor as an option to any
@@ -106,7 +111,7 @@ registerBlockType( 'groups/groups-shortcodes', {
 		},
 
 	/**
-	 * The edit function describes the structure of your block in the context of the editor.
+	 * The edit function describes the structure of the block in the context of the editor.
 	 * This represents what the editor will render when the block is used.
 	 *
 	 * The "edit" property must be a valid function.
@@ -115,6 +120,7 @@ registerBlockType( 'groups/groups-shortcodes', {
 	 */
 	 edit: withSelect( ( select ) => {
 			 return {
+				 // Uses select() to return an object of the store's selectors. Pre-bound to pass the current state automatically.
 				 groups: select('groups/groups-shortcodes').receiveGroups(),
 			 };
 		 } )( props => {
