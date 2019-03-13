@@ -32,6 +32,14 @@ class Groups_Shortcodes_Block extends Groups_Access_Shortcodes {
 				'groups_rest',
 			)
 		);
+		add_filter(
+			'block_categories',
+			 array(
+				  __CLASS__,
+					 'groups_block_categories'
+				),
+				10, 2
+		);
 	}
 
 	public static function groups_rest() {
@@ -76,6 +84,19 @@ class Groups_Shortcodes_Block extends Groups_Access_Shortcodes {
 		return $groups_options;
 	}
 
+	// Add a new block category for 'groups' in the block editor
+	public static function groups_block_categories( $categories, $post ) {
+	$categories = array_merge(
+		$categories,
+		array( array(
+			'slug'  => 'groups',
+			'title' => 'Groups',
+			'icon'  => 'lock'
+		) )
+	);
+	return $categories;
+}
+
 	public static function groups_shortcodes_block_block_init() {
 		// Skip block registration if Gutenberg is not enabled/merged.
 		if ( ! function_exists( 'register_block_type' ) ) {
@@ -84,7 +105,7 @@ class Groups_Shortcodes_Block extends Groups_Access_Shortcodes {
 		// Scripts.
 		wp_register_script(
 			'groups_shortcodes-block-js', // Handle.
-			plugins_url( '/dist/blocks.build.js', dirname( __FILE__ ) ), // Block.build.js: We register the block here. Built with Webpack.
+			plugins_url( '/dist/blocks.build.js', dirname( __FILE__ ) ),
 			array(
 				'wp-blocks',
 				'wp-i18n',
@@ -92,6 +113,15 @@ class Groups_Shortcodes_Block extends Groups_Access_Shortcodes {
 				'wp-editor',
 			)
 		);
+		//Localize - used for category icon path storage.
+		wp_localize_script(
+	'groups_shortcodes-block-js',
+	'groups_shortcodes_block',
+	array(
+		'icon'    => plugins_url( '/src/block/groups-20x20.png', dirname( __FILE__ ) )
+	)
+);
+
 		// Frontend Styles.
 		wp_register_style(
 			'groups_shortcodes-style-css', // Handle.

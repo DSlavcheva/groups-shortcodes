@@ -14,3 +14,10 @@
   width: 100%; }
   .groups-inspector__control > div > div {
     margin-top: 0px; }
+
+.wp-block-groups-groups-shortcodes {
+  border: 2px solid #53678e;
+  border-radius: 10px;
+  padding: 10px; }
+  .wp-block-groups-groups-shortcodes__inner-block {
+    padding: 20px; }

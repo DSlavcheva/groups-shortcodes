@@ -12,3 +12,12 @@
  			margin-top: 0px;
  		}
  	}
+
+  .wp-block-groups-groups-shortcodes {
+    border:2px solid #53678e;
+    border-radius: 10px;
+    padding:10px;
+    &__inner-block {
+      padding:20px;
+    }
+  }

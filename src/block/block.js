@@ -6,7 +6,7 @@
 
 //import React Select2
 import CreatableSelect from 'react-select/lib/Creatable';
-//import classnames from 'classnames';
+import classnames from 'classnames';
 
 //  Import CSS.
 import './style.scss';
@@ -81,6 +81,21 @@ const store = registerStore( 'groups/groups-shortcodes', {
 	},
 } );
 
+//Change the 'groups' category icon in the block editor.
+wp.blocks.updateCategory(
+	'groups',
+	{
+		icon : wp.element.createElement(
+			'img',
+			{
+				src    : groups_shortcodes_block.icon,
+				width  : 20,
+				height : 20
+			}
+		)
+	}
+);
+
 /**
  * Register: Groups Shortcodes Gutenberg Block.
  *
@@ -98,8 +113,8 @@ registerBlockType( 'groups/groups-shortcodes', {
 	// Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
 	title: __( 'Groups Shortcodes','groups-shortcodes' ), // Block title.
 	description: __( 'Restrict content for members of particular groups', 'groups-shortcodes' ),
-	icon: 'screenoptions', // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
-	category: 'common', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
+	icon: 'lock', // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
+	category: 'groups', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
 	keywords: [
 		__( 'groups-shortcodes' ),
 	],
@@ -118,6 +133,8 @@ registerBlockType( 'groups/groups-shortcodes', {
 	 *
 	 * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
 	 */
+
+	 //Use withSelect to inject state-derived props into a component.
 	 edit: withSelect( ( select ) => {
 			 return {
 				 // Uses select() to return an object of the store's selectors. Pre-bound to pass the current state automatically.
@@ -126,7 +143,7 @@ registerBlockType( 'groups/groups-shortcodes', {
 		 } )( props => {
 			const { attributes: { groups_select }, groups, className, setAttributes, isSelected } = props;
 			const handleGroupsChange = ( groups_select ) => setAttributes( { groups_select: JSON.stringify( groups_select ) } );
-			const handleGroupsCreate = ;
+			//const handleGroupsCreate = ;
 			let selectedGroups = [];
 			if ( null !== groups_select ) {
 				selectedGroups = JSON.parse( groups_select );
@@ -137,7 +154,7 @@ registerBlockType( 'groups/groups-shortcodes', {
 				return (
 					<p className={className} >
 						<Spinner />
-						{ __( 'Loading Data', 'groups-shortcodes' ) }
+						{ __( 'Loading...', 'groups-shortcodes' ) }
 					</p>
 				);
 			}
@@ -156,7 +173,7 @@ registerBlockType( 'groups/groups-shortcodes', {
 									name='block-groups'
 									value={ selectedGroups }
 									onChange={ handleGroupsChange }
-									onCreateOption={ handleGroupsCreate }
+									//onCreateOption={ handleGroupsCreate }
 									options={ groups }
 									isClearable
 									isMulti='true'
@@ -165,8 +182,10 @@ registerBlockType( 'groups/groups-shortcodes', {
 					</PanelBody>
 				</InspectorControls>,
 				  <div className={ props.className }>
-			      { __( 'Add Blocks with restricted content.', 'groups-shortcodes' ) }
-			      <InnerBlocks />
+			      <strong> { __( 'Content to be restricted.', 'groups-shortcodes' ) } </strong>
+						<div className={ classnames( className ) + '__inner-block' }>
+			      	<InnerBlocks />
+						</div>
 			    </div>
 			];
 		} ),
@@ -181,7 +200,9 @@ registerBlockType( 'groups/groups-shortcodes', {
 	 */
 	save: props => {
 		return (
-      <InnerBlocks.Content />
+			<div>
+      	<InnerBlocks.Content />
+			</div>
 		);
 	},
 } );
