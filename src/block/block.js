@@ -1,23 +1,21 @@
 /**
  * BLOCK: groups-shortcodes
- *
- *
  */
 
-//import React Select2
+// import React Select2.
 import CreatableSelect from 'react-select/lib/Creatable';
 import classnames from 'classnames';
 
-//  Import CSS.
+// Import CSS.
 import './style.scss';
 import './editor.scss';
 
-const { apiFetch }      = wp;
-const { __ } = wp.i18n; // Import __() from wp.i18n
-const { registerStore, withSelect }        = wp.data; // Import registerStore, withSelect from wp.data
-const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.blocks
-const { InspectorControls, InnerBlocks } = wp.editor; // Import InspectorControls, InnerBlocks from wp.editor
-const { PanelBody, PanelRow, Spinner } = wp.components; // Import PanelBody, SelectControl from wp.components
+const { apiFetch }                       = wp;
+const { __ }                             = wp.i18n; // Import __() from wp.i18n.
+const { registerStore, withSelect }      = wp.data; // Import registerStore, withSelect from wp.data.
+const { registerBlockType }              = wp.blocks; // Import registerBlockType() from wp.blocks.
+const { InspectorControls, InnerBlocks } = wp.editor; // Import InspectorControls, InnerBlocks from wp.editor.
+const { PanelBody, PanelRow, Spinner }   = wp.components; // Import PanelBody, SelectControl from wp.components.
 
 /**
  * Actions object. Actions are payloads of information that send data from the application to the store. Plain JavaScript objects.
@@ -42,46 +40,49 @@ const actions = {
 /**
  * Store
  */
-const store = registerStore( 'groups/groups-shortcodes', {
-	//The reducer is a pure function that takes the previous state and an action, and returns the next state.
-	reducer( state = { groups: {} }, action ) {
-		switch ( action.type ) {
-			case 'SET_GROUPS':
-				return {
-					//To keep the reducer pure, state should not be mutated.
-					//Use object state operator to copy enumerabale properties into a new object instead of Object.assign().
-					...state,
-					groups: action.groups,
+const store = registerStore(
+	'groups/groups-shortcodes',
+	{
+		// The reducer is a pure function that takes the previous state and an action, and returns the next state.
+		reducer( state = { groups: {} }, action ) {
+			switch ( action.type ) {
+				case 'SET_GROUPS':
+					return {
+						// To keep the reducer pure, state should not be mutated.
+						// Use object state operator to copy enumerabale properties into a new object instead of Object.assign().
+						...state,
+						groups: action.groups,
 				};
-		}
-		// Return the previous state - for an unknown action.
-		return state;
-	},
+			}
+			// Return the previous state - for an unknown action.
+			return state;
+		},
 
-	actions,
-	//A selector accepts state and optional arguments and returns some value from state.
-	selectors: {
-		receiveGroups( state ) {
-			const { groups } = state;
-			return groups;
+		actions,
+		// A selector accepts state and optional arguments and returns some value from state.
+		selectors: {
+			receiveGroups( state ) {
+				const { groups } = state;
+				return groups;
+			},
 		},
-	},
-	//Defines the execution flow behavior associated with a specific action type.
-	controls: {
-		RECEIVE_GROUPS( action ) {
-			return apiFetch( { path: action.path } );
+		// Defines the execution flow behavior associated with a specific action type.
+		controls: {
+			RECEIVE_GROUPS( action ) {
+				return apiFetch( { path: action.path } );
+			},
 		},
-	},
-	//Side-effects for a selector. Used with data from an extrnal source.
-	resolvers: {
-		* receiveGroups( state ) {
-			const groups = yield actions.receiveGroups( '/groups/groups-shortcodes/groups/' );
-			return actions.setGroups( groups );
+		// Side-effects for a selector. Used with data from an extrnal source.
+		resolvers: {
+			* receiveGroups( state ) {
+				const groups = yield actions.receiveGroups( '/groups/groups-shortcodes/groups/' );
+				return actions.setGroups( groups );
+			},
 		},
-	},
-} );
+	}
+);
 
-//Change the 'groups' category icon in the block editor.
+// Change the 'groups' category icon in the block editor.
 wp.blocks.updateCategory(
 	'groups',
 	{
@@ -109,16 +110,16 @@ wp.blocks.updateCategory(
  * @return {?WPBlock}          The block, if it has been successfully
  *                             registered; otherwise `undefined`.
  */
-registerBlockType( 'groups/groups-shortcodes', {
-	// Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
-	title: __( 'Groups Shortcodes','groups-shortcodes' ), // Block title.
-	description: __( 'Restrict content for members of particular groups', 'groups-shortcodes' ),
-	icon: 'lock', // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
-	category: 'groups', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
-	keywords: [
-		__( 'groups-shortcodes' ),
-	],
-	attributes: {
+registerBlockType(
+	'groups/groups-shortcodes',
+	{
+		// Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
+		title: __( 'Groups Shortcodes','groups-shortcodes' ), // Block title.
+		description: __( 'Restrict content for members of particular groups', 'groups-shortcodes' ),
+		icon: 'lock', // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
+		category: 'groups', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
+		keywords: [__( 'groups-shortcodes' ),	],
+		attributes: {
 			groups_select: {
 				type:    'string',
 				default: null
@@ -134,61 +135,64 @@ registerBlockType( 'groups/groups-shortcodes', {
 	 * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
 	 */
 
-	 //Use withSelect to inject state-derived props into a component.
-	 edit: withSelect( ( select ) => {
-			 return {
-				 // Uses select() to return an object of the store's selectors. Pre-bound to pass the current state automatically.
-				 groups: select('groups/groups-shortcodes').receiveGroups(),
-			 };
-		 } )( props => {
+	// Use withSelect to inject state-derived props into a component.
+	edit: withSelect(
+		( select ) => {
+			return {
+				// Uses select() to return an object of the store's selectors. Pre-bound to pass the current state automatically.
+				groups: select( 'groups/groups-shortcodes' ).receiveGroups(),
+			};
+		}
+	)(
+		props => {
 			const { attributes: { groups_select }, groups, className, setAttributes, isSelected } = props;
 			const handleGroupsChange = ( groups_select ) => setAttributes( { groups_select: JSON.stringify( groups_select ) } );
-			//const handleGroupsCreate = ;
+			// const handleGroupsCreate = ;
 			let selectedGroups = [];
 			if ( null !== groups_select ) {
 				selectedGroups = JSON.parse( groups_select );
 			}
-
-			// Show if the data is not loaded yet.
+      // Show if the data is not loaded yet.
 			if ( ! groups.length ) {
 				return (
-					<p className={className} >
-						<Spinner />
-						{ __( 'Loading...', 'groups-shortcodes' ) }
-					</p>
+				< p className = {className} >
+				< Spinner / >
+				{ __( 'Loading...', 'groups-shortcodes' ) }
+				< / p >
 				);
 			}
 
 			return [
-				<InspectorControls>
-					<PanelBody title={ __( 'Select Groups', 'groups-shortcodes' ) } className="block-inspector">
-					<PanelRow>
-							<label htmlFor="block-groups" className="groups-inspector__label">
-									{ __( 'Content will be shown to users that are members of these groups:', 'groups-shortcodes' ) }
-							</label>
-					</PanelRow>
-						<PanelRow>
-								<CreatableSelect
-									className="groups-inspector__control"
-									name='block-groups'
-									value={ selectedGroups }
-									onChange={ handleGroupsChange }
-									//onCreateOption={ handleGroupsCreate }
-									options={ groups }
-									isClearable
-									isMulti='true'
-								 />
-						</PanelRow>
-					</PanelBody>
-				</InspectorControls>,
-				  <div className={ props.className }>
-			      <strong> { __( 'Content to be restricted.', 'groups-shortcodes' ) } </strong>
-						<div className={ classnames( className ) + '__inner-block' }>
-			      	<InnerBlocks />
-						</div>
-			    </div>
+			< InspectorControls >
+			< PanelBody title = { __( 'Select Groups', 'groups-shortcodes' ) } className = "block-inspector" >
+			< PanelRow >
+			< label htmlFor   = "block-groups" className = "groups-inspector__label" >
+					{ __( 'Content will be shown to users that are members of these groups:', 'groups-shortcodes' ) }
+			< / label >
+			< / PanelRow >
+			< PanelRow >
+				< CreatableSelect
+					className = "groups-inspector__control"
+					name      = 'block-groups'
+					value     = { selectedGroups }
+					onChange  = { handleGroupsChange }
+					// onCreateOption={ handleGroupsCreate }
+					options = { groups }
+					isClearable
+					isMulti = 'true'
+				 / >
+			< / PanelRow >
+			< / PanelBody >
+			< / InspectorControls > ,
+			< div className = { props.className } >
+			< strong > { __( 'Content to be restricted.', 'groups-shortcodes' ) } < / strong >
+			< div className = { classnames( className ) + '__inner-block' } >
+			< InnerBlocks / >
+			< / div >
+			< / div >
 			];
-		} ),
+		}
+	),
 
 	/**
 	 * The save function defines the way in which the different attributes should be combined
@@ -200,9 +204,10 @@ registerBlockType( 'groups/groups-shortcodes', {
 	 */
 	save: props => {
 		return (
-			<div>
-      	<InnerBlocks.Content />
-			</div>
+			< div >
+			< InnerBlocks.Content / >
+			< / div >
 		);
 	},
-} );
+}
+);
