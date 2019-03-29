@@ -24,6 +24,6 @@ add_action( 'plugins_loaded', 'gsb_plugins_loaded' );
 
 function gsb_plugins_loaded() {
 	if ( class_exists( 'Groups_Access_Shortcodes' ) ) {
-		include_once plugin_dir_path( __FILE__ ) . 'src/class-groups-shortcodes-block';
+		include_once plugin_dir_path( __FILE__ ) . 'src/class-groups-shortcodes-block.php';
 	};
 }
