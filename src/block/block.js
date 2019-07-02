@@ -3,12 +3,12 @@
  */
 
 // import React Select2.
-import CreatableSelect from 'react-select/lib/Creatable';
+import Select from 'react-select';
 import classnames from 'classnames';
 
 // Import CSS.
 //import './style.scss';
-//import './editor.scss';
+import './editor.scss';
 
 const { apiFetch }                       = wp;
 const { __ }                             = wp.i18n; // Import __() from wp.i18n.
@@ -197,7 +197,7 @@ registerBlockType(
 			< / label >
 			< / PanelRow >
 			< PanelRow >
-				< CreatableSelect
+				< Select
 					className = "groups-inspector__control"
 					name      = 'block-groups'
 					value     = { selectedGroups }
@@ -210,8 +210,7 @@ registerBlockType(
 			< / PanelRow >
 			< / PanelBody >
 			< / InspectorControls > ,
-			< div className = { props.className } >
-			< strong > { __( 'Content to be restricted.', 'groups-shortcodes' ) } < / strong >
+			< div className = { isSelected ? ( classnames( className ) + '__selected' ) : props.className } >
 			< div className = { classnames( className ) + '__inner-block' } >
 			< InnerBlocks / >
 			< / div >

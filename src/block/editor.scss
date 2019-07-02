@@ -14,10 +14,35 @@
  	}
 
   .wp-block-groups-groups-shortcodes {
-    border:2px solid #53678e;
-    border-radius: 10px;
-    padding:10px;
-    &__inner-block {
-      padding:20px;
-    }
+   border: 1px dashed #33333380;
+   border-radius: 2px;
+   padding: 0;
+   box-sizing: border-box;
+   margin: -1px;
+
+   &:before {
+     font-family: dashicons;
+     font-size: 1.618em;
+     content: "\f160";
+     display: block;
+     position: absolute;
+     top: -1em;
+     left: -1em;
+     opacity: 0.5;
+   }
+  }
+
+  .wp-block-groups-groups-shortcodes__inner-block {
+    padding-left: 5px;
+  }
+
+  .wp-block-groups-groups-shortcodes__selected {
+   border: none;
+   padding: unset;
+   box-sizing: unset;
+   margin: unset;
+
+   &:before {
+      content: '';
+   }
   }
