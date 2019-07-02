@@ -13,10 +13,15 @@ import './editor.scss';
 const { apiFetch }                       = wp;
 const { __ }                             = wp.i18n; // Import __() from wp.i18n.
 const { registerStore, withSelect }      = wp.data; // Import registerStore, withSelect from wp.data.
+const { withDispatch }      						 = wp.data; // Import withDispatch from wp.data.
 const { registerBlockType }              = wp.blocks; // Import registerBlockType() from wp.blocks.
 const { InspectorControls, InnerBlocks } = wp.editor; // Import InspectorControls, InnerBlocks from wp.editor.
 const { PanelBody, PanelRow, Spinner }   = wp.components; // Import PanelBody, SelectControl from wp.components.
 
+// Default state - no groups selected.
+const DEFAULT_STATE = {
+	groups: {},
+};
 /**
  * Actions object. Actions are payloads of information that send data from the application to the store. Plain JavaScript objects.
  */
@@ -28,7 +33,15 @@ const actions = {
 			groups,
 		};
 	},
-	// Action creator for the action called when populationg the select's options. Called fetchFrom API in the WP handbook.
+	// // Action creator for adding a new group.
+	// createGroup( groups, newGroup ) {
+	// 	return {
+	// 		type: 'CREATE_GROUP',
+	// 		groups,
+	// 		newGroup,
+	// 	};
+	// },
+	// Action creator for the action called when populationg the select's options. Called fetchFromAPI in the WP handbook.
 	receiveGroups( path ) {
 		return {
 			type: 'RECEIVE_GROUPS',
@@ -44,7 +57,7 @@ const store = registerStore(
 	'groups/groups-shortcodes',
 	{
 		// The reducer is a pure function that takes the previous state and an action, and returns the next state.
-		reducer( state = { groups: {} }, action ) {
+		reducer( state = DEFAULT_STATE, action ) {
 			switch ( action.type ) {
 				case 'SET_GROUPS':
 					return {
@@ -52,9 +65,14 @@ const store = registerStore(
 						// Use object state operator to copy enumerabale properties into a new object instead of Object.assign().
 						...state,
 						groups: action.groups,
-				};
+					};
+				// case 'CREATE_GROUP':
+				// 	return {
+				// 		...state,
+				// 		groups: [...state.groups, action.newGroup],
+				// 	};
 			}
-			// Return the previous state - for an unknown action.
+			// Return the previous state - for when there's an unknown action.
 			return state;
 		},
 
@@ -143,7 +161,15 @@ registerBlockType(
 				groups: select( 'groups/groups-shortcodes' ).receiveGroups(),
 			};
 		}
-	)(
+	)
+	// withDispatch(
+	// 	( dispatch ) => {
+	// 		return {
+	// 			groups: dispatch( 'groups/groups-shortcodes' ).createGroup(newGroup),
+	// 		};
+	// 	}
+	// )
+	(
 		props => {
 			const { attributes: { groups_select }, groups, className, setAttributes, isSelected } = props;
 			const handleGroupsChange = ( groups_select ) => setAttributes( { groups_select: JSON.stringify( groups_select ) } );

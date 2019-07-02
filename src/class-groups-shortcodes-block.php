@@ -18,6 +18,7 @@ require_once GROUPS_ACCESS_LIB . '/class-groups-access-meta-boxes.php';
 class Groups_Shortcodes_Block extends Groups_Access_Shortcodes {
 
 
+
 	public static function init() {
 		add_action(
 			'init',
@@ -58,7 +59,7 @@ class Groups_Shortcodes_Block extends Groups_Access_Shortcodes {
 					'callback'            => array( __CLASS__, 'get_groups' ),
 					// Restrict access for the endpoint only to users that can administrate groups restrictions.
 					'permission_callback' => function () {
-								return Groups_Access_Meta_Boxes::user_can_restrict();
+						return Groups_Access_Meta_Boxes::user_can_restrict();
 					},
 				),
 				// Create a new group. TODO
