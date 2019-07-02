@@ -18,31 +18,10 @@ require_once GROUPS_ACCESS_LIB . '/class-groups-access-meta-boxes.php';
 class Groups_Shortcodes_Block extends Groups_Access_Shortcodes {
 
 
-
 	public static function init() {
-		add_action(
-			'init',
-			array(
-				__CLASS__,
-				'groups_shortcodes_block_block_init',
-			)
-		);
-		add_action(
-			'rest_api_init',
-			array(
-				__CLASS__,
-				'groups_rest',
-			)
-		);
-		add_filter(
-			'block_categories',
-			array(
-				__CLASS__,
-				'groups_block_categories',
-			),
-			10,
-			2
-		);
+		add_action(	'init', array( __CLASS__, 'groups_shortcodes_block_block_init',	)	);
+		add_action( 'rest_api_init', array( __CLASS__, 'groups_rest', ) );
+		add_filter(	'block_categories',	array( __CLASS__, 'groups_block_categories', ),	10,	2	);
 	}
 
 	// Create the REST API endpoints.
@@ -98,11 +77,6 @@ class Groups_Shortcodes_Block extends Groups_Access_Shortcodes {
 		}
 
 		return $groups_options;
-	}
-
-	// TODO: Callback function for creating a new group.
-	public static function create_group() {
-
 	}
 
 	// Add a new block category for 'groups' in the block editor
@@ -163,10 +137,7 @@ class Groups_Shortcodes_Block extends Groups_Access_Shortcodes {
 				'editor_script'   => 'groups_shortcodes-block-js',
 				'editor_style'    => 'groups_shortcodes-block-editor-css',
 				'style'           => 'groups_shortcodes-style-css',
-				'render_callback' => array(
-					__CLASS__,
-					'groups_shortcodes_render_content',
-				),
+				'render_callback' => array(	__CLASS__, 'groups_shortcodes_render_content', ),
 			)
 		);
 	}
