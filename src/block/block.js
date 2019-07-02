@@ -7,8 +7,8 @@ import CreatableSelect from 'react-select/lib/Creatable';
 import classnames from 'classnames';
 
 // Import CSS.
-import './style.scss';
-import './editor.scss';
+//import './style.scss';
+//import './editor.scss';
 
 const { apiFetch }                       = wp;
 const { __ }                             = wp.i18n; // Import __() from wp.i18n.
