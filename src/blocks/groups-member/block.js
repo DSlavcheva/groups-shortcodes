@@ -13,7 +13,6 @@ import './editor.scss';
 const { apiFetch }                       = wp;
 const { __ }                             = wp.i18n; // Import __() from wp.i18n.
 const { registerStore, withSelect }      = wp.data; // Import registerStore, withSelect from wp.data.
-const { withDispatch }      						 = wp.data; // Import withDispatch from wp.data.
 const { registerBlockType }              = wp.blocks; // Import registerBlockType() from wp.blocks.
 const { InspectorControls, InnerBlocks } = wp.editor; // Import InspectorControls, InnerBlocks from wp.editor.
 const { PanelBody, PanelRow, Spinner }   = wp.components; // Import PanelBody, SelectControl from wp.components.
@@ -33,15 +32,7 @@ const actions = {
 			groups,
 		};
 	},
-	// // Action creator for adding a new group.
-	// createGroup( groups, newGroup ) {
-	// 	return {
-	// 		type: 'CREATE_GROUP',
-	// 		groups,
-	// 		newGroup,
-	// 	};
-	// },
-	// Action creator for the action called when populationg the select's options. Called fetchFromAPI in the WP handbook.
+
 	receiveGroups( path ) {
 		return {
 			type: 'RECEIVE_GROUPS',
@@ -116,7 +107,7 @@ wp.blocks.updateCategory(
 );
 
 /**
- * Register: Groups Shortcodes Gutenberg Block.
+ * Register: Groups Member Gutenberg Block.
  *
  * Registers a new block provided a unique name and an object defining its
  * behavior. Once registered, the block is made editor as an option to any
@@ -129,10 +120,10 @@ wp.blocks.updateCategory(
  *                             registered; otherwise `undefined`.
  */
 registerBlockType(
-	'groups/groups-shortcodes',
+	'groups/groups-member',
 	{
 		// Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
-		title: __( 'Groups Shortcodes','groups-shortcodes' ), // Block title.
+		title: __( 'Groups Member Block','groups-shortcodes' ), // Block title.
 		description: __( 'Restrict content for members of particular groups', 'groups-shortcodes' ),
 		icon: 'lock', // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
 		category: 'groups', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
@@ -162,18 +153,11 @@ registerBlockType(
 			};
 		}
 	)
-	// withDispatch(
-	// 	( dispatch ) => {
-	// 		return {
-	// 			groups: dispatch( 'groups/groups-shortcodes' ).createGroup(newGroup),
-	// 		};
-	// 	}
-	// )
+
 	(
 		props => {
 			const { attributes: { groups_select }, groups, className, setAttributes, isSelected } = props;
 			const handleGroupsChange = ( groups_select ) => setAttributes( { groups_select: JSON.stringify( groups_select ) } );
-			// const handleGroupsCreate = ;
 			let selectedGroups = [];
 			if ( null !== groups_select ) {
 				selectedGroups = JSON.parse( groups_select );
@@ -202,7 +186,6 @@ registerBlockType(
 					name      = 'block-groups'
 					value     = { selectedGroups }
 					onChange  = { handleGroupsChange }
-					// onCreateOption={ handleGroupsCreate }
 					options = { groups }
 					isClearable
 					isMulti = 'true'

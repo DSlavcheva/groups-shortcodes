@@ -115,7 +115,7 @@ class Groups_Shortcodes_Block extends Groups_Access_Shortcodes {
 			'groups_shortcodes-block-js',
 			'groups_shortcodes_block',
 			array(
-				'icon' => plugins_url( '/src/block/groups-20x20.png', dirname( __FILE__ ) ),
+				'icon' => plugins_url( '/src/blocks/groups-20x20.png', dirname( __FILE__ ) ),
 			)
 		);
 

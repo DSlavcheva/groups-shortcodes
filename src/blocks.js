@@ -9,4 +9,5 @@
  * Webpack is compiling as the input file.
  */
 
-import './block/block.js';
+import './blocks/groups-member/block.js';
+import './blocks/groups-non-member/block.js';

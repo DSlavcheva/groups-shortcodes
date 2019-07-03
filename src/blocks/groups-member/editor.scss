@@ -13,7 +13,7 @@
  		}
  	}
 
-  .wp-block-groups-groups-shortcodes {
+  .wp-block-groups-groups-member {
    border: 1px dashed #33333380;
    border-radius: 2px;
    padding: 0;
@@ -32,11 +32,11 @@
    }
   }
 
-  .wp-block-groups-groups-shortcodes__inner-block {
+  .wp-block-groups-groups-member__inner-block {
     padding-left: 5px;
   }
 
-  .wp-block-groups-groups-shortcodes__selected {
+  .wp-block-groups-groups-member__selected {
    border: none;
    padding: unset;
    box-sizing: unset;
