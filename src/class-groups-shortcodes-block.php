@@ -132,17 +132,26 @@ class Groups_Shortcodes_Block extends Groups_Access_Shortcodes {
 			array( 'wp-edit-blocks' ) // Dependency to include the CSS after it.
 		);
 		register_block_type(
-			'groups/groups-shortcodes',
+			'groups/groups-member',
 			array(
 				'editor_script'   => 'groups_shortcodes-block-js',
 				'editor_style'    => 'groups_shortcodes-block-editor-css',
 				'style'           => 'groups_shortcodes-style-css',
-				'render_callback' => array(	__CLASS__, 'groups_shortcodes_render_content', ),
+				'render_callback' => array(	__CLASS__, 'groups_member_render_content', ),
+			)
+		);
+		register_block_type(
+			'groups/groups-non-member',
+			array(
+				'editor_script'   => 'groups_shortcodes-block-js',
+				'editor_style'    => 'groups_shortcodes-block-editor-css',
+				'style'           => 'groups_shortcodes-style-css',
+				'render_callback' => array(	__CLASS__, 'groups_non_member_render_content', ),
 			)
 		);
 	}
 
-	public static function groups_shortcodes_render_content( $attributes, $content ) {
+	public static function groups_member_render_content( $attributes, $content ) {
 
 		$output          = '';
 		$show_content    = false;
@@ -167,6 +176,42 @@ class Groups_Shortcodes_Block extends Groups_Access_Shortcodes {
 			if ( $current_group ) {
 				if ( Groups_User_Group::read( $groups_user->user->ID, $current_group->group_id ) ) {
 					$show_content = true;
+					break;
+				}
+			}
+		}
+		if ( $show_content ) {
+			$output = '<div>' . $content . '</div>';
+		}
+
+		return $output;
+	}
+
+	public static function groups_non_member_render_content( $attributes, $content ) {
+
+		$output          = '';
+		$show_content    = true;
+		$selected_groups = array();
+
+		if ( isset( $attributes['groups_select'] ) ) {
+			$decoded_groups = json_decode( $attributes['groups_select'] );
+			if ( ! empty( $decoded_groups ) ) {
+				foreach ( $decoded_groups as $group ) {
+					$selected_groups[] = $group->value;
+				}
+			}
+		}
+
+		$groups_user = new Groups_User( get_current_user_id() );
+		foreach ( $selected_groups as $group ) {
+			$current_group = Groups_Group::read( $group );
+			if ( ! $current_group ) {
+				$current_group = Groups_Group::read_by_name( $group );
+			}
+
+			if ( $current_group ) {
+				if ( Groups_User_Group::read( $groups_user->user->ID, $current_group->group_id ) ) {
+					$show_content = false;
 					break;
 				}
 			}
