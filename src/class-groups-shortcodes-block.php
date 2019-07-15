@@ -15,11 +15,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 require_once GROUPS_ACCESS_LIB . '/class-groups-access-meta-boxes.php';
 
-class Groups_Shortcodes_Block extends Groups_Access_Shortcodes {
+class Groups_Blocks extends Groups_Access_Shortcodes {
 
 
 	public static function init() {
-		add_action(	'init', array( __CLASS__, 'groups_shortcodes_block_block_init',	)	);
+		add_action(	'init', array( __CLASS__, 'groups_blocks_block_init',	)	);
 		add_action( 'rest_api_init', array( __CLASS__, 'groups_rest', ) );
 		add_filter(	'block_categories',	array( __CLASS__, 'groups_block_categories', ),	10,	2	);
 	}
@@ -39,14 +39,6 @@ class Groups_Shortcodes_Block extends Groups_Access_Shortcodes {
 					// Restrict access for the endpoint only to users that can administrate groups restrictions.
 					'permission_callback' => function () {
 						return Groups_Access_Meta_Boxes::user_can_restrict();
-					},
-				),
-				// Create a new group. TODO
-				array(
-					'methods'             => 'POST',
-					'callback'            => array( __CLASS__, 'create_group' ),
-					'permission_callback' => function () {
-								return Groups_Access_Meta_Boxes::user_can_restrict();
 					},
 				),
 			)
@@ -94,7 +86,7 @@ class Groups_Shortcodes_Block extends Groups_Access_Shortcodes {
 		return $categories;
 	}
 
-	public static function groups_shortcodes_block_block_init() {
+	public static function groups_blocks_block_init() {
 		// Skip block registration if Gutenberg is not enabled/merged.
 		if ( ! function_exists( 'register_block_type' ) ) {
 			return;
@@ -115,7 +107,7 @@ class Groups_Shortcodes_Block extends Groups_Access_Shortcodes {
 			'groups_shortcodes-block-js',
 			'groups_shortcodes_block',
 			array(
-				'icon' => plugins_url( '/src/blocks/groups-20x20.png', dirname( __FILE__ ) ),
+				'icon' => plugins_url( '/src/utils/img/groups-20x20.png', dirname( __FILE__ ) ),
 			)
 		);
 
@@ -225,4 +217,4 @@ class Groups_Shortcodes_Block extends Groups_Access_Shortcodes {
 
 }
 
-Groups_Shortcodes_Block::init();
+Groups_Blocks::init();

@@ -106,6 +106,19 @@ wp.blocks.updateCategory(
 	}
 );
 
+const nonMemberIcon = wp.element.createElement('svg',
+	{
+		width: 1792,
+		height: 1792,
+		viewBox: '0 0 1792 1792'
+	},
+	wp.element.createElement( 'path',
+		{
+			d:"M896 352q-148 0-273 73t-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273-73-273-198-198-273-73zm768 544q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"
+		}
+	)
+);
+
 /**
  * Register: Groups Shortcodes Gutenberg Block.
  *
@@ -125,7 +138,7 @@ registerBlockType(
 		// Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
 		title: __( 'Groups Non-member Block','groups-shortcodes' ), // Block title.
 		description: __( 'Restrict content for members of particular groups', 'groups-shortcodes' ),
-		icon: 'unlock', // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
+		icon: nonMemberIcon, // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
 		category: 'groups', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
 		keywords: [__( 'groups-shortcodes' ),	],
 		attributes: {
